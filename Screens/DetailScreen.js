@@ -2,10 +2,12 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { Button, Tab } from "@rneui/base";
 import { Feather, MaterialCommunityIcons, Foundation } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const DetailScreen = () => {
   const [index, setIndex] = useState(0);
   const [time, setTime] = useState(true);
+  const navigation = useNavigation();
 
   return (
     <View style={styles.details}>
@@ -178,6 +180,7 @@ const DetailScreen = () => {
                 backgroundImage:
                   "linear-gradient(90deg, #FFF 0%, #FDA43C 100%)",
               }}
+              onPress={() => navigation.navigate('Control Panel')}
               containerStyle={{
                 width: 140,
               }}

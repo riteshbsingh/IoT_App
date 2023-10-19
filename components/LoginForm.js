@@ -2,8 +2,10 @@ import { View, Text, StyleSheet, TextInput } from "react-native";
 import React from "react";
 import { Button } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 const LoginForm = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.form}>
       <Text
@@ -54,7 +56,7 @@ const LoginForm = () => {
           style={{ position: "absolute", top: 13, right: 18 }}
         />
       </View>
-      <Button radius={"sm"} color="#FDA43C" borderRadius={8}>
+      <Button radius={"sm"} color="#FDA43C" onPress={() => navigation.navigate('Detail Page')} borderRadius={8}>
         Log In
       </Button>
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
