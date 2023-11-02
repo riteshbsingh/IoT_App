@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TextInput } from "react-native";
 import React from "react";
 import { Button } from "@rneui/themed";
 import { FontAwesome } from "@expo/vector-icons";
@@ -13,16 +7,15 @@ import { useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Users } from "../constants/Users";
+import validator from "validator";
+import { useEffect } from "react";
 
-const LoginForm = () => {
+const SignUpForm = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cpassword, setCPassword] = useState("");
   const toast = useToast();
-
-  const setData = () => {
-    AsyncStorage.setItem("email", email);
-  };
 
   function doesUserExist(userToCheck) {
     for (const user of Users) {
@@ -54,47 +47,60 @@ const LoginForm = () => {
         animationType: "zoom-in",
       });
     else {
-      if (doesUserExist({ email, password })) {
-        setData();
-        toast.show("Login Successful!", {
-          type: "success",
-          placement: "bottom",
-          duration: 2000,
-          offset: 30,
-          animationType: "zoom-in",
-        });
-        navigation.navigate("Home");
-      } else
-        toast.show("Invalid Credentials!", {
+      let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+      if (reg.test(email)) {
+      if (password == cpassword) {
+        if (!doesUserExist({ email, password })) {
+          Users.push({ email, password });
+          toast.show("SignUp Successful!", {
+            type: "success",
+            placement: "bottom",
+            duration: 2000,
+            offset: 30,
+            animationType: "zoom-in",
+          });
+          navigation.navigate("Login");
+        } else {
+          toast.show("User already registerd!", {
+            type: "danger",
+            placement: "bottom",
+            duration: 2000,
+            offset: 30,
+            animationType: "zoom-in",
+          });
+        }
+      } else {
+        toast.show("Passwords don't match!", {
           type: "danger",
           placement: "bottom",
           duration: 2000,
           offset: 30,
           animationType: "zoom-in",
         });
+      }
+    }
+    else {
+      toast.show("Email is not correct!", {
+        type: "warning",
+        placement: "bottom",
+        duration: 2000,
+        offset: 30,
+        animationType: "zoom-in",
+      });
+    }
     }
   };
 
-  const getIsSignedIn = async () => {
-    const user = await AsyncStorage.getItem("email");
-    if (user != null) navigation.navigate("Home");
-  };
+  // useEffect( () => {
+  // let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+  // console.log(reg.test('test@gmail.com'))
+  // },[])
 
-  useFocusEffect(() => {
-    getIsSignedIn();
-  });
 
   return (
     <View style={styles.form}>
-      <Text
-        style={{
-          fontSize: 32,
-          fontWeight: 600,
-          color: "#FFF",
-          display: "flex",
-        }}
-      >
-        Sign in
+      <Text style={{ fontSize: 32, fontWeight: 600, color: "#FFF" }}>
+        Sign up
       </Text>
       <View style={{ width: 300 }}>
         <TextInput
@@ -105,6 +111,7 @@ const LoginForm = () => {
             borderRadius: 8,
             color: "#fff",
             padding: 20,
+            // marginBottom: 15,
           }}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -124,10 +131,31 @@ const LoginForm = () => {
             borderRadius: 8,
             color: "#fff",
             padding: 20,
-            marginBottom: 15,
+            // marginBottom: 15,
           }}
           secureTextEntry={true}
           onChange={(e) => setPassword(e.target.value)}
+        />
+        <FontAwesome
+          name="lock"
+          size={20}
+          color="#E5F3FF"
+          style={{ position: "absolute", top: 13, right: 18 }}
+        />
+      </View>
+      <View style={{ width: 300 }}>
+        <TextInput
+          placeholder="Confirm Password "
+          style={{
+            border: "2px solid #E5F3FF",
+            height: 32,
+            borderRadius: 8,
+            color: "#fff",
+            padding: 20,
+            marginBottom: 15,
+          }}
+          secureTextEntry={true}
+          onChange={(e) => setCPassword(e.target.value)}
         />
         <FontAwesome
           name="lock"
@@ -143,13 +171,13 @@ const LoginForm = () => {
         color={"#3a3f54"}
         onPress={handleLogin}
       >
-        Log In
+        Sign Up
       </Button>
     </View>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
 
 const styles = StyleSheet.create({
   form: {

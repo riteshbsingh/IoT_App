@@ -5,13 +5,13 @@ import BgImg from "../assets/loginbgImg.svg";
 const LoginScreenImage = () => {
   return (
     <View style={{ width: "100%", height: "100%" }}>
-      <ImageBackground
+      {/* <ImageBackground
         source={{
           uri: BgImg,
         }}
         blurRadius={1}
         style={styles.img}
-      >
+      > */}
         <View style={styles.text}>
           <Text
             style={{
@@ -40,7 +40,7 @@ const LoginScreenImage = () => {
             IOT APP
           </Text>
         </View>
-      </ImageBackground>
+      {/* </ImageBackground> */}
     </View>
   );
 };
@@ -58,9 +58,9 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     justifyContent: "flex-end",
-    backgroundColor: "rgba(240, 160, 115, 0.00)",
-    backgroundImage:
-      "linear-gradient(180deg, rgba(240, 160, 115, 0.00) 0%, #CC7154 100%)",
+    // backgroundColor: "rgba(240, 160, 115, 0.00)",
+    // backgroundImage:
+    //   "linear-gradient(180deg, rgba(240, 160, 115, 0.00) 0%, #CC7154 100%)",
   },
 });
 

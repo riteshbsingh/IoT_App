@@ -1,13 +1,27 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { Button, Tab } from "@rneui/base";
-import { Feather, MaterialCommunityIcons, Foundation } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import {
+  Feather,
+  MaterialCommunityIcons,
+  Foundation,
+} from "@expo/vector-icons";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DetailScreen = () => {
   const [index, setIndex] = useState(0);
   const [time, setTime] = useState(true);
   const navigation = useNavigation();
+
+  const getIsSignedIn = async () => {
+    const user = await AsyncStorage.getItem("email");
+    if(user == null) navigation.navigate("Login");
+  };
+
+  useFocusEffect(() => {
+    getIsSignedIn();
+})
 
   return (
     <View style={styles.details}>
@@ -166,6 +180,12 @@ const DetailScreen = () => {
                 backgroundImage:
                   "linear-gradient(90deg, #FFF 0%, #FDA43C 100%)",
               }}
+              onPress={() =>
+                navigation.navigate("Control", {
+                  screen: "Control",
+                  params: { room: "Master Bedroom" },
+                })
+              }
               containerStyle={{
                 width: 150,
               }}
@@ -180,7 +200,12 @@ const DetailScreen = () => {
                 backgroundImage:
                   "linear-gradient(90deg, #FFF 0%, #FDA43C 100%)",
               }}
-              onPress={() => navigation.navigate('Control Panel')}
+              onPress={() =>
+                navigation.navigate("Control", {
+                  screen: "Control",
+                  params: { room: "Bedroom" },
+                })
+              }
               containerStyle={{
                 width: 140,
               }}
@@ -204,6 +229,12 @@ const DetailScreen = () => {
                 backgroundImage:
                   "linear-gradient(90deg, #FFF 0%, #FDA43C 100%)",
               }}
+              onPress={() =>
+                navigation.navigate("Control", {
+                  screen: "Control",
+                  params: { room: "Kids Room" },
+                })
+              }
               containerStyle={{
                 width: 150,
               }}
@@ -218,6 +249,12 @@ const DetailScreen = () => {
                 backgroundImage:
                   "linear-gradient(90deg, #FFF 0%, #FDA43C 100%)",
               }}
+              onPress={() =>
+                navigation.navigate("Control", {
+                  screen: "Control",
+                  params: { room: "Drawing Room" },
+                })
+              }
               containerStyle={{
                 width: 140,
               }}
@@ -263,8 +300,20 @@ const DetailScreen = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Feather name="sun" size={30} color={time ? "#3F3F3F" : "#FAA23B"} />
-                  <Text style={{ fontSize: 15, fontWeight: 500, color: time ? "#3F3F3F" : "#FAA23B" }}>Morning</Text>
+                  <Feather
+                    name="sun"
+                    size={30}
+                    color={time ? "#3F3F3F" : "#FAA23B"}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      fontWeight: 500,
+                      color: time ? "#3F3F3F" : "#FAA23B",
+                    }}
+                  >
+                    Morning
+                  </Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -284,9 +333,17 @@ const DetailScreen = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Feather name="log-out" size={30} color={!time ? "#3F3F3F" : "#FAA23B"} />
+                  <Feather
+                    name="log-out"
+                    size={30}
+                    color={!time ? "#3F3F3F" : "#FAA23B"}
+                  />
                   <Text
-                    style={{ color: !time ? "#3F3F3F" : "#FAA23B", fontSize: 15, fontWeight: 500 }}
+                    style={{
+                      color: !time ? "#3F3F3F" : "#FAA23B",
+                      fontSize: 15,
+                      fontWeight: 500,
+                    }}
                   >
                     Out
                   </Text>
